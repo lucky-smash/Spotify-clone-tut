@@ -185,3 +185,13 @@ body {
     justify-content: center;
     gap: 12px;
 }
+
+.songList ul {
+    padding : 0 42px ;
+    
+}
+
+.songList ul li {
+    list-style-type: none ;
+    display: flex;
+}
