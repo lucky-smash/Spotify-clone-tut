@@ -2,7 +2,7 @@ console.log("Lets write javaScript");
 
 async function getSongs() {
   let a = await fetch("http://127.0.0.1:3000/songs/"); //   fecthing the songs from local server
- 
+
   let response = await a.text();
   // console.log(response)
   let div = document.createElement("div");
@@ -19,29 +19,31 @@ async function getSongs() {
   return songs; // Return the array of songs
 }
 
-async function main() { 
-  let songs = await getSongs();   
-  console.log(songs);   
+async function main() {
+  let songs = await getSongs();
+
   let index = 0;
-  let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0]
-  for(const song of songs){ //we use for of loop because its a array
-     songUL.innerHTML = songUL.innerHTML + `<li> ${index+1} ${song.replaceAll("%20"," ")} </li>` ;
-     index++;
+
+  //show all the songs in the playlist
+  let songUL = document
+    .querySelector(".songList")
+    .getElementsByTagName("ul")[0];
+  for (const song of songs) {
+    //we use for of loop because its a array
+    songUL.innerHTML =
+      songUL.innerHTML +
+      `<li> <img class="invert" src="music.svg" alt="">
+                <div class="info">
+                <div>${song.replaceAll("%20", " ")}</div>
+                <div>Lucky</div>
+              </div>
+             
+              <div class="playnowSpanImg">
+                <span class="playnow">Play Now</span>
+                <img src= "play.svg" alt= " " >
+              </div> </li> `;
+    index++;
   }
-  //   play the first song. 
-
-  var audio = new Audio(songs[1]);   
-  audio.play();        
-
-  audio.addEventListener("loadeddata" , () => {
-
-    let duration = audio.duration ;
-    console.log(duration)  //the duration variable now holds the duration (in seconds) of the audio clip
-  }); 
 }
-     
-main();          
- 
-              
- 
-  
+
+main();
