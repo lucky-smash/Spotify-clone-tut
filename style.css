@@ -193,12 +193,11 @@ body {
     position: fixed;
     bottom: 20px;
     border-radius: 8px;
-    padding: 12px;
+    /* padding: 17px; */
+    padding-bottom: 20px;
+    padding-top: 10px;
     background-color: rgb(34, 34, 34);
     width: 70vw;
-
-
-
 }
 
 .songsbuttons {
@@ -255,4 +254,26 @@ body {
     font-size: 10px;
 
 
+}
+
+.seekbar {
+    height: 5px;
+    width: 97%;
+    background: white;
+    position: absolute;
+    bottom: 5px;
+    margin: 2px;
+    border-radius: 10px;
+    left: 10px;
+}
+
+.circle {
+    width: 15px;
+    height: 15px;
+    border-radius: 13px;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+    bottom: 5px;
+    left: 0%;
+    transition: left 0.5s;
 }
