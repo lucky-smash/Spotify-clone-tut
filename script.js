@@ -20,6 +20,7 @@ async function getSongs() {
 }
 
 async function main() {
+  //get the list of all the songs
   let songs = await getSongs();
 
   let index = 0;
