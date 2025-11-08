@@ -1,7 +1,23 @@
 console.log("Lets write javaScript");
+let currentSong = new Audio(); //we make it a global variable
+
+function secondstoMinutesSeconds(seconds) {// this code i took from chatgpt for converting seconds to minutes seconds 
+  if (isNaN(seconds) || seconds < 0) {
+    return "Invalid input";
+  }
+ 
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60);
+
+  const formattedMinutes = String(minutes).padStart(2, "0");
+
+  const formattedSeconds = String(remainingSeconds).padStart(2, "0");
+
+  return `${formattedMinutes} : ${formattedSeconds}`;
+}
 
 async function getSongs() {
-  let a = await fetch("http://127.0.0.1:3000/songs/"); //   fecthing the songs from local server
+  let a = await fetch("./songs/"); //   fecthing the songs from local server
 
   let response = await a.text();
   // console.log(response)
@@ -19,15 +35,23 @@ async function getSongs() {
   return songs; // Return the array of songs
 }
 
-const playMusic = (track) => {
-  let audio = new Audio("/songs/" + track);
-  audio.play();
-};
+const playMusic = (track ,pause=false) => {
+
+  currentSong.src = "/songs/" + track;
+  if(!pause){
+  currentSong.play();
+  play.src = "pause.svg";   
+  }
+  
+  document.querySelector(".songinfo").innerHTML = track;
+  document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
+}; 
 
 async function main() {
-  let currentSong;
   //get the list of all the songs
   let songs = await getSongs();
+
+  playMusic(songs[0],true)
 
   let index = 0;
 
@@ -47,7 +71,7 @@ async function main() {
              
               <div class="playnowSpanImg">
                 <span class="playnow">Play Now</span>
-                <img src= "play.svg" alt= " " >
+                <img  src= "play.svg" alt= " " >
               </div> </li> `;
     index++;
   }
@@ -61,6 +85,34 @@ async function main() {
       playMusic(e.querySelector(".info").firstElementChild.innerHTML);
     });
   });
+
+  //Attach an event listener to play , next and previos
+  play.addEventListener("click", () => {
+    if (currentSong.paused) {
+      currentSong.play();
+      play.src = "pause.svg";
+    } else {
+      currentSong.pause();
+      play.src = "play.svg";
+    }
+  });
+
+  // Listen for time update event
+  currentSong.addEventListener("timeupdate", () => {
+    console.log(currentSong.currentTime, currentSong.duration);
+    document.querySelector(".songtime").innerHTML = `${secondstoMinutesSeconds(
+      currentSong.currentTime
+    )} / ${secondstoMinutesSeconds(currentSong.duration)}`;
+    document.querySelector(".circle").style.left = (currentSong.currentTime/ currentSong.duration) * 100 + "%"
+  });
+
+  //Add an event listener to seekbar
+  document.querySelector(".seekbar").addEventListener("click" , e=>{
+    let percent = (e.offsetX/e.target.getBoundingClientRect().width) * 100
+    document.querySelector(".circle").style.left = percent + "%"  //getBoundingClientRect() tell where we are on the page
+    currentSong.currentTime = (( currentSong.duration ) * percent ) / 100
+  })  
 }
 
 main();
+  

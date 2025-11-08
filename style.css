@@ -205,6 +205,7 @@ body {
     display: flex;
     justify-content: center;
     gap: 12px;
+    cursor: pointer;
 }
 
 /* .songList{
@@ -265,6 +266,7 @@ body {
     margin: 2px;
     border-radius: 10px;
     left: 10px;
+    cursor: pointer;
 }
 
 .circle {
@@ -276,4 +278,16 @@ body {
     bottom: 5px;
     left: 0%;
     transition: left 0.5s;
+}
+
+.songinfo,
+.songtime {
+
+    padding: 0 50px;
+}
+
+
+.abovebar {
+    display: flex;
+    justify-content: space-between;
 }
