@@ -19,7 +19,13 @@ async function getSongs() {
   return songs; // Return the array of songs
 }
 
+const playMusic = (track) => {
+  let audio = new Audio("/songs/" + track);
+  audio.play();
+};
+
 async function main() {
+  let currentSong;
   //get the list of all the songs
   let songs = await getSongs();
 
@@ -45,6 +51,16 @@ async function main() {
               </div> </li> `;
     index++;
   }
+
+  // Attach an eventListener to each song
+  Array.from(
+    document.querySelector(".songList").getElementsByTagName("li")
+  ).forEach((e) => {
+    e.addEventListener("click", (element) => {
+      console.log(e.querySelector(".info").firstElementChild.innerHTML);
+      playMusic(e.querySelector(".info").firstElementChild.innerHTML);
+    });
+  });
 }
 
 main();
