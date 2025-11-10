@@ -1,11 +1,12 @@
 console.log("Lets write javaScript");
 let currentSong = new Audio(); //we make it a global variable
 
-function secondstoMinutesSeconds(seconds) {// this code i took from chatgpt for converting seconds to minutes seconds 
+function secondstoMinutesSeconds(seconds) {
+  // this code i took from chatgpt for converting seconds to minutes seconds
   if (isNaN(seconds) || seconds < 0) {
     return "Invalid input";
   }
- 
+
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.floor(seconds % 60);
 
@@ -35,23 +36,22 @@ async function getSongs() {
   return songs; // Return the array of songs
 }
 
-const playMusic = (track ,pause=false) => {
-
+const playMusic = (track, pause = false) => {
   currentSong.src = "/songs/" + track;
-  if(!pause){
-  currentSong.play();
-  play.src = "pause.svg";   
+  if (!pause) {
+    currentSong.play();
+    play.src = "pause.svg";
   }
-  
+
   document.querySelector(".songinfo").innerHTML = track;
   document.querySelector(".songtime").innerHTML = "00:00 / 00:00";
-}; 
+};
 
 async function main() {
   //get the list of all the songs
   let songs = await getSongs();
 
-  playMusic(songs[0],true)
+  playMusic(songs[0], true);
 
   let index = 0;
 
@@ -103,16 +103,29 @@ async function main() {
     document.querySelector(".songtime").innerHTML = `${secondstoMinutesSeconds(
       currentSong.currentTime
     )} / ${secondstoMinutesSeconds(currentSong.duration)}`;
-    document.querySelector(".circle").style.left = (currentSong.currentTime/ currentSong.duration) * 100 + "%"
+    document.querySelector(".circle").style.left =
+      (currentSong.currentTime / currentSong.duration) * 100 + "%";
   });
 
   //Add an event listener to seekbar
-  document.querySelector(".seekbar").addEventListener("click" , e=>{
-    let percent = (e.offsetX/e.target.getBoundingClientRect().width) * 100
-    document.querySelector(".circle").style.left = percent + "%"  //getBoundingClientRect() tell where we are on the page
-    currentSong.currentTime = (( currentSong.duration ) * percent ) / 100
-  })  
+  document.querySelector(".seekbar").addEventListener("click", (e) => {
+    let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
+    document.querySelector(".circle").style.left = percent + "%"; //getBoundingClientRect() tell where we are on the page
+    currentSong.currentTime = (currentSong.duration * percent) / 100;
+  });
+
+  //Add an event listener for hamburger
+  document.querySelector(".hamburger").addEventListener("click", () => {
+    document.querySelector(".left").style.left = "0";
+  });
+
+  //Add an event listener for close
+
+  document.querySelector(".close").addEventListener("click", () => {
+    console.log("Close clicked ✅");
+    document.querySelector(".left").style.left = "-100%";
+  });
 }
 
-main();
-  
+// main()
+document.addEventListener("DOMContentLoaded", main);
