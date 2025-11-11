@@ -4,7 +4,7 @@ let currentSong = new Audio(); //we make it a global variable
 function secondstoMinutesSeconds(seconds) {
   // this code i took from chatgpt for converting seconds to minutes seconds
   if (isNaN(seconds) || seconds < 0) {
-    return "Invalid input";
+    return "00 : 00";
   }
 
   const minutes = Math.floor(seconds / 60);
@@ -17,6 +17,23 @@ function secondstoMinutesSeconds(seconds) {
   return `${formattedMinutes} : ${formattedSeconds}`;
 }
 
+// function bindSidebarControls() {
+//   const hamburger = document.querySelector(".hamburger");
+//   const closeBtn = document.querySelector(".left .close");
+//   const leftPanel = document.querySelector(".left");
+
+//   if (!hamburger || !closeBtn) return;
+
+//   hamburger.onclick = () => {
+//     leftPanel.style.left = "0";
+//   };
+
+//   closeBtn.onclick = () => {
+//     console.log("Close clicked ✅");
+//     leftPanel.style.left = "-100%";
+//   };
+// }
+
 async function getSongs() {
   let a = await fetch("./songs/"); //   fecthing the songs from local server
 
@@ -26,8 +43,10 @@ async function getSongs() {
   div.innerHTML = response; //creating demo div container to store songs cause before this its just a string not comes in html that we need to parse
   let as = div.getElementsByTagName("a");
   let songs = [];
+
   for (let index = 0; index < as.length; index++) {
     const element = as[index];
+    
     if (element.href.endsWith(".mp3")) {
       // Parse the HTML and extract links ending with .mp3
       songs.push(element.href.split("/songs/")[1]);
@@ -109,23 +128,58 @@ async function main() {
 
   //Add an event listener to seekbar
   document.querySelector(".seekbar").addEventListener("click", (e) => {
-    let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
+    let percent = ((e.offsetX / e.target.getBoundingClientRect().width) * 100)  ;
     document.querySelector(".circle").style.left = percent + "%"; //getBoundingClientRect() tell where we are on the page
     currentSong.currentTime = (currentSong.duration * percent) / 100;
   });
 
-  //Add an event listener for hamburger
-  document.querySelector(".hamburger").addEventListener("click", () => {
-    document.querySelector(".left").style.left = "0";
-  });
+  // //Add an event listener for hamburger
+  // document.querySelector(".hamburger").addEventListener("click", () => {
+  //   document.querySelector(".left").style.left = "0";
+  // });
 
-  //Add an event listener for close
+  // //Add an event listener for close
 
-  document.querySelector(".close").addEventListener("click", () => {
-    console.log("Close clicked ✅");
-    document.querySelector(".left").style.left = "-100%";
-  });
+  // document.querySelector(".close").addEventListener("click", () => {
+  //   console.log("Close clicked ✅");
+  //   document.querySelector(".left").style.left = "-100%";
+  // });
+
+  // Add an event listener for hamburger
+const hamburger = document.querySelector(".hamburger");
+const closeBtn = document.querySelector(".left .close");
+const leftPanel = document.querySelector(".left");
+
+hamburger.addEventListener("click", () => {
+  leftPanel.style.left = "0";
+  console.log("Sidebar opened ✅");
+});
+
+// Add an event listener for close
+closeBtn.addEventListener("click", () => {
+  console.log("Close clicked ✅");
+  leftPanel.style.left = "-100%";
+});
+
+//Add event listener to previous and next 
+
+const previous = document.getElementById("previous")
+
+previous.addEventListener("click" , () =>{
+  console.log("previous clicked ✅")
+  console.log(currentSong)
+  
+})
+
+const next = document.getElementById("next")
+
+next.addEventListener("click" , () =>{
+  console.log("next clicked ✅")
+  console.log(currentSong)
+})
+
+
 }
 
-// main()
-document.addEventListener("DOMContentLoaded", main);
+main()
+// document.addEventListener("DOMContentLoaded", main); //this ensures that first run all the script then runs main   
