@@ -1,6 +1,6 @@
 console.log("Lets write javaScript");
 let currentSong = new Audio(); //we make it a global variable
-
+let songs;
 function secondstoMinutesSeconds(seconds) {
   // this code i took from chatgpt for converting seconds to minutes seconds
   if (isNaN(seconds) || seconds < 0) {
@@ -17,22 +17,6 @@ function secondstoMinutesSeconds(seconds) {
   return `${formattedMinutes} : ${formattedSeconds}`;
 }
 
-// function bindSidebarControls() {
-//   const hamburger = document.querySelector(".hamburger");
-//   const closeBtn = document.querySelector(".left .close");
-//   const leftPanel = document.querySelector(".left");
-
-//   if (!hamburger || !closeBtn) return;
-
-//   hamburger.onclick = () => {
-//     leftPanel.style.left = "0";
-//   };
-
-//   closeBtn.onclick = () => {
-//     console.log("Close clicked ✅");
-//     leftPanel.style.left = "-100%";
-//   };
-// }
 
 async function getSongs() {
   let a = await fetch("./songs/"); //   fecthing the songs from local server
@@ -68,7 +52,7 @@ const playMusic = (track, pause = false) => {
 
 async function main() {
   //get the list of all the songs
-  let songs = await getSongs();
+  songs = await getSongs();
 
   playMusic(songs[0], true);
 
@@ -161,22 +145,41 @@ closeBtn.addEventListener("click", () => {
   leftPanel.style.left = "-100%";
 });
 
-//Add event listener to previous and next 
+//Add event listener to previous  
 
-const previous = document.getElementById("previous")
+const previous = document.getElementById("previous");
 
-previous.addEventListener("click" , () =>{
-  console.log("previous clicked ✅")
-  console.log(currentSong)
-  
-})
+previous.addEventListener("click", () => {
+  console.log("previous clicked ✅");
 
-const next = document.getElementById("next")
+  let currentFile = currentSong.src.split("/songs/")[1];
+  let index = songs.indexOf(currentFile);
 
-next.addEventListener("click" , () =>{
-  console.log("next clicked ✅")
-  console.log(currentSong)
-})
+  if (index > 0) {
+    playMusic(songs[index - 1]);
+  } else {
+    console.log("No previous song");
+  }
+});
+
+
+//Add event listener to  next 
+
+const next = document.getElementById("next");
+
+next.addEventListener("click", () => {
+  console.log("next clicked ✅");
+
+  let currentFile = currentSong.src.split("/songs/")[1];
+  let index = songs.indexOf(currentFile);
+
+  if (index + 1 < songs.length) {
+    playMusic(songs[index + 1]);
+  } else {
+    console.log("No next song");
+  }
+});
+
 
 
 }
