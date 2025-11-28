@@ -1,7 +1,6 @@
-
 console.log("Lets write javaScript");
 
-let currentSong = new Audio(); 
+let currentSong = new Audio();
 let songs;
 
 // Convert seconds → mm:ss
@@ -20,9 +19,9 @@ function secondstoMinutesSeconds(seconds) {
 
 // Load songs from songs.json
 async function getSongs() {
-  let response = await fetch("songs.json");
-  let data = await response.json();
-  return data.songs;
+  let response = await fetch("songs.json");   // here response is not real data its like envelope real data is inside envelope(response.json())
+  let data = await response.json(); // extracting real data from envelope
+  return data.songs;// songs is key inside songs.json
 }
 
 // Play music
@@ -45,7 +44,9 @@ async function main() {
   playMusic(songs[0], true);
 
   // Render playlist
-  let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
+  let songUL = document
+    .querySelector(".songList")
+    .getElementsByTagName("ul")[0];
 
   for (const song of songs) {
     songUL.innerHTML += `
@@ -84,8 +85,9 @@ async function main() {
 
   // Update time + seekbar
   currentSong.addEventListener("timeupdate", () => {
-    document.querySelector(".songtime").innerHTML = 
-      `${secondstoMinutesSeconds(currentSong.currentTime)} / ${secondstoMinutesSeconds(currentSong.duration)}`;
+    document.querySelector(".songtime").innerHTML = `${secondstoMinutesSeconds(
+      currentSong.currentTime
+    )} / ${secondstoMinutesSeconds(currentSong.duration)}`;
 
     document.querySelector(".circle").style.left =
       (currentSong.currentTime / currentSong.duration) * 100 + "%";
